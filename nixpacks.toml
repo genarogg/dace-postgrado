@@ -1,6 +1,12 @@
-[providers]
-php = "8.2"
-node = "20"
+# Configuración de Nixpacks para Laravel con Filament
+
+# Proveedores - deben ser una lista, no un mapa
+providers = ["php", "node"]
+
+[variables]
+# Configurar versiones específicas
+PHP_VERSION = "8.2"
+NODE_VERSION = "20"
 
 [phases.setup]
 nixPkgs = [
@@ -82,9 +88,13 @@ cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8000}"
 
 # Variables de entorno por defecto
 [variables]
+# Configurar versiones específicas
+PHP_VERSION = "8.2"
+NODE_VERSION = "20"
+
 APP_ENV = "production"
 APP_DEBUG = "false"
-APP_KEY = "base64:Gv0sGAfgv+zGVuH+ajk0PDpHp7SXVke50GTG3JWUNv0="
+APP_KEY = ""
 DB_CONNECTION = "sqlite"
 DB_DATABASE = "/app/database/database.sqlite"
 CACHE_DRIVER = "file"
@@ -97,16 +107,14 @@ LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
 FILAMENT_FILESYSTEM_DISK = "local"
 
 # Optimizaciones de PHP para producción
-[variables.php]
-memory_limit = "512M"
-max_execution_time = "300"
-upload_max_filesize = "64M"
-post_max_size = "64M"
+PHP_MEMORY_LIMIT = "512M"
+PHP_MAX_EXECUTION_TIME = "300"
+PHP_UPLOAD_MAX_FILESIZE = "64M"
+PHP_POST_MAX_SIZE = "64M"
+
+# Configuración específica para Vite
+VITE_APP_NAME = "${APP_NAME}"
 
 # Archivos estáticos que deben ser servidos
 [staticAssets]
 "public" = "/"
-
-# Configuración específica para Vite
-[variables.vite]
-VITE_APP_NAME = "${APP_NAME}"
