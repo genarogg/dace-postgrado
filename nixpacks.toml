@@ -1,4 +1,4 @@
-nixPkgs = ["php", "nodejs", "sqlite"]
+providers = ["php", "node"]
 
 [variables]
 PHP_VERSION = "8.2"
@@ -18,7 +18,7 @@ LOG_CHANNEL = "stderr"
 VITE_APP_NAME = "${APP_NAME}"
 
 [phases.setup]
-nixPkgs = ["php82", "nodejs_20", "sqlite"]
+nixPkgs = ["php82", "nodejs-20_x", "sqlite"]
 
 [phases.build]
 cmds = [
