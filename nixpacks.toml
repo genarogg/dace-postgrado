@@ -17,9 +17,6 @@ QUEUE_CONNECTION = "database"
 LOG_CHANNEL = "stderr"
 VITE_APP_NAME = "${APP_NAME}"
 
-[phases.setup]
-nixPkgs = ["php82", "nodejs_20", "sqlite"]
-
 [phases.build]
 cmds = [
   "composer install --no-dev --optimize-autoloader --no-interaction",
