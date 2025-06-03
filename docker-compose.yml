@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dace-postgrado-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - /var/www/vendor
+      - /var/www/node_modules
+    networks:
+      - laravel-filament
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: mysql:8.0
+    container_name: dace-postgrado-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: 0
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel-filament
+
+  redis:
+    image: redis:alpine
+    container_name: dace-postgrado-redis
+    restart: unless-stopped
+    networks:
+      - laravel-filament
+
+  nginx:
+    image: nginx:alpine
+    container_name: dace-postgrado-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - /var/www/vendor
+      - /var/www/node_modules
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - laravel-filament
+    depends_on:
+      - app
+
+networks:
+  laravel-filament:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
