@@ -2,7 +2,7 @@ providers = ["php", "node"]
 
 [variables]
 PHP_VERSION = "8.2"
-NIXPACKS_NODE_VERSION = "20"
+NODE_VERSION = "20"
 APP_NAME = "DACE UNERG POSTGRADO"
 APP_ENV = "production"
 APP_DEBUG = "false"
@@ -17,26 +17,22 @@ QUEUE_CONNECTION = "database"
 LOG_CHANNEL = "stderr"
 VITE_APP_NAME = "${APP_NAME}"
 
-# Add Nix packages configuration
-[nix]
-channel = "nixpkgs-unstable"
-
-# Specify exact packages needed
-[nix.packages]
-php82 = "latest"
-nodejs_20 = "latest"
-sqlite = "latest"
+[phases.setup]
+nixPkgs = ["php82", "nodejs_20", "sqlite"]
 
 [phases.build]
 cmds = [
-  "composer install --no-dev --optimize-autoloader",
-  "npm ci && npm run build",
-  "mkdir -p database && touch database/database.sqlite",
+  "composer install --no-dev --optimize-autoloader --no-interaction",
+  "npm ci --only=production",
+  "npm run build",
+  "mkdir -p database",
+  "touch database/database.sqlite",
   "php artisan key:generate --force",
   "php artisan migrate --force",
-  "php artisan config:cache"
+  "php artisan config:cache",
+  "php artisan route:cache",
+  "php artisan view:cache"
 ]
 
-# Add start command
 [start]
 cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
