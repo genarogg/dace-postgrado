@@ -2,7 +2,6 @@ providers = ["php", "node"]
 
 [variables]
 PHP_VERSION = "8.2"
-NODE_VERSION = "20"
 APP_NAME = "DACE UNERG POSTGRADO"
 APP_ENV = "production"
 APP_DEBUG = "false"
