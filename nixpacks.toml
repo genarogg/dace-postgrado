@@ -1,4 +1,4 @@
-providers = ["php", "node"]
+nixPkgs = ["php", "nodejs", "sqlite"]
 
 [variables]
 PHP_VERSION = "8.2"
